@@ -4,16 +4,21 @@ void setup() {
 }
 
 void loop() {
-  int analogValue0 = analogRead(A0)/4;
-  Serial.print(analogValue0);
+  int analogValue0 = analogRead(A0);
+  //Serial.print(analogValue0/4);
+  //Serial.print(",");
+  int analogValue1 = analogRead(A1);
+  //Serial.print(analogValue1/4);
+  //Serial.print(",");
+  int analogValue2 = analogRead(A2);
+  //Serial.print(analogValue2/4);
+  //Serial.print(",");
+  int analogValue3 = analogRead(A3);
+  //Serial.print(analogValue3/4);
+  //Serial.print("\n");
+
+  Serial.print((analogValue0+analogValue1)/8);
   Serial.print(",");
-  int analogValue1 = analogRead(A1)/4;
-  Serial.print(analogValue1);
-  Serial.print(",");
-  int analogValue2 = analogRead(A2)/4;
-  Serial.print(analogValue2);
-  Serial.print(",");
-  int analogValue3 = analogRead(A3)/4;
-  Serial.print(analogValue3);
+  Serial.print((analogValue2+analogValue3)/8);
   Serial.print("\n");
 }
