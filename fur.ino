@@ -8,24 +8,24 @@ void setup() {
 
 void loop() {
   int analogValue0 = analogRead(A0)/4;
-  Serial.print(analogValue0);
-  Serial.print(",");
+//  Serial.print(analogValue0);
+//  Serial.print(",");
 
   int analogValue1 = analogRead(A1)/4;
-  Serial.print(analogValue1);
-  Serial.print(",");
+//  Serial.print(analogValue1);
+//  Serial.print(",");
 
   int analogValue2 = analogRead(A2)/4;
-  Serial.println(analogValue2);
-  delay(10);
+//  Serial.println(analogValue2);
+//  delay(10);
 
-  if (analogValue0 < 255){
+  if (analogValue0 < 220){
     start=millis();
-    delay(200);
+    //delay(200);
   }
-  if (analogValue1 < 255){
+  if (analogValue1 < 220){
     finished=millis();
-    delay(200);
+    //delay(200);
     displayResult();
   }
 }
