@@ -1,7 +1,6 @@
 import processing.serial.*;
 Serial myPort;
-
-float c = 0;
+float xPos;
 
 void setup(){
   size(800,600);
@@ -13,13 +12,17 @@ void setup(){
 }
 // 
 void draw(){
-  background(30, 40, c);
+  background(0);
+  fill(255);
+  noStroke();
+  ellipse(xPos, height/2, 40, 40);
+  ellipse(xPos-10, height/2 - 20, 10, 30); 
+  ellipse(xPos+10, height/2 - 20, 10, 30); 
 }
 
 void serialEvent (Serial myPort) {
-  // get the byte:
-  int inByte = myPort.read();
-  // print it:
+  float inByte = myPort.read();
   println(inByte);
-  c = map(inByte, 0, 40, 0, 255);
+  xPos = map(inByte, 160, 190, 0, width);
+  myPort.write('x');
 }
