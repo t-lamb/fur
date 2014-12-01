@@ -17,8 +17,12 @@ void loop() {
   //Serial.print(analogValue3/4);
   //Serial.print("\n");
 
-  Serial.print((analogValue0+analogValue1)/8);
+  //find average of one side
+  int ave0 = (analogValue0+analogValue1)/2;
+  Serial.print(ave0/4);
   Serial.print(",");
-  Serial.print((analogValue2+analogValue3)/8);
+  //find average of other side
+  int ave1 = (analogValue2+analogValue3)/2;
+  Serial.print(ave1/4);
   Serial.print("\n");
 }
