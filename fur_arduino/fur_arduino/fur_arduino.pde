@@ -1,10 +1,10 @@
 import processing.serial.*;
 Serial myPort;
 
-float yPos0 = 0;
-float yPos1 = 0;
-float yPos2 = 0;
-float yPos3 = 0;
+float s0 = 0;
+float s1 = 0;
+float s2 = 0;
+float s3 = 0;
 
 void setup() {
   size(800, 600);
@@ -17,48 +17,39 @@ void setup() {
 
 void draw() {
   background(0);
-
+  
   noStroke();
   //green
-  fill(204, 255, 153);
-  ellipse(100, yPos0, 40, 40);
-  ellipse(100-10, yPos0 - 20, 10, 30); 
-  ellipse(100+10, yPos0 - 20, 10, 30); 
-
+  fill(204, 255,153);
+  ellipse(s0, 2*(height/3), 40, 40);
+  
   //blue
   fill(204, 229, 255);
-  ellipse(200, yPos1, 40, 40);
-  ellipse(200-10, yPos1 - 20, 10, 30); 
-  ellipse(200+10, yPos1 - 20, 10, 30); 
-
+  ellipse(s1, height/3, 40, 40);
+  
   //white
   fill(255);
-  ellipse(300, yPos2, 40, 40);
-  ellipse(300-10, yPos2 - 20, 10, 30); 
-  ellipse(300+10, yPos2 - 20, 10, 30);
-
-  //yellow
-  fill(255,255,153);
-  ellipse(400, yPos3, 40, 40);
-  ellipse(400-10, yPos3 - 20, 10, 30); 
-  ellipse(400+10, yPos3 - 20, 10, 30);
+  ellipse(s2, height/3, 40, 40);
   
+  //yellow
+  fill(255, 255, 153);
+  ellipse(s3, 2*(height/3), 40, 40);
 }
 
 void serialEvent (Serial myPort) {
-  String input = myPort.readStringUntil('\n');
-  if (input != null) {
-    println(input);
+  //read serial buffer:
+  String inputString = myPort.readStringUntil('\n');
+  if (inputString != null) {
+    println(inputString);
     
-    input = trim(input);
-    int values[] = int(split(input, ','));
+    inputString = trim(inputString);
+    int values[] = int(split(inputString, ','));
     
-    if (values.length == 4){
-    yPos0 = map(values[0], 100, 200, 0, height);
-    yPos1 = map(values[1], 100, 200, 0, height);
-    yPos2 = map(values[2], 100, 200, 0, height);
-    yPos3 = map(values[3], 100, 200, 0, height);
-    myPort.write('x');
+    if(values.length == 4) {
+      s0 = map(values[0], 100, 255, 0, width/2);
+      s1 = map(values[1], 100, 255, 0, width/2);
+      s2 = map(values[2], 100, 255, width/2, width);
+      s3 = map(values[3], 100, 255, width/2, width);
     }
   }
 }
