@@ -35,8 +35,11 @@ void draw() {
   fill(255, 255, 153);
   ellipse(s3, 2*(height/3), 40, 40);
 }
-
+int renameMe = 0;
 void serialEvent (Serial myPort) {
+  renameMe++;
+  
+  if(renameMe % 60 == 0){
   //read serial buffer:
   String inputString = myPort.readStringUntil('\n');
   if (inputString != null) {
@@ -52,4 +55,17 @@ void serialEvent (Serial myPort) {
       s3 = map(values[3], 100, 255, width/2, width);
     }
   }
+  }
 }
+
+// for(int x = 0; x < 10; x=x+2){
+//   //do thing
+// }
+
+// int x = 0;
+// while(x != -1) {
+//   if(x % 2 == 0) {
+//   //do thing
+//   }
+//   x++; 
+// }
