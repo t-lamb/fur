@@ -5,8 +5,8 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    char input = Serial.read();
+ // if (Serial.available() > 0) {
+   // char input = Serial.read();
     
     //Read all sensors
     int analogValue0 = analogRead(A0);
@@ -23,23 +23,17 @@ void loop() {
     delay(1);
     int analogValue3 = analogRead(A3);
     Serial.print(analogValue3/4);
-    Serial.print("\n");
-
-    //find average of one side
-    //int ave0 = (analogValue0+analogValue1)/2;
-    //Serial.print(ave0/4);
-    //Serial.print(",");
-
-    //find average of other side
-    //int ave1 = (analogValue2+analogValue3)/2;
-    //Serial.print(ave1/4);
-    //Serial.print("\n");
-
-
-//    //send to processing
+    Serial.print(",");
+//
+//    //find average of one side
+//    int ave0 = (analogValue0+analogValue1)/2;
 //    Serial.print(ave0/4);
 //    Serial.print(",");
+//
+//    //find average of other side
+//    int ave1 = (analogValue2+analogValue3)/2;
 //    Serial.print(ave1/4);
-  }
+//    Serial.print("\n");
+
 }
 

@@ -1,5 +1,6 @@
 import processing.serial.*;
 Serial myPort;
+
 float yPos0 = 0;
 float yPos1 = 0;
 float yPos2 = 0;
@@ -41,6 +42,7 @@ void draw() {
   ellipse(400, yPos3, 40, 40);
   ellipse(400-10, yPos3 - 20, 10, 30); 
   ellipse(400+10, yPos3 - 20, 10, 30);
+  
 }
 
 void serialEvent (Serial myPort) {
