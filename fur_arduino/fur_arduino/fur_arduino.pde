@@ -17,45 +17,51 @@ void setup() {
 
 void draw() {
   background(0);
-  
+
   noStroke();
   //green
-  fill(204, 255,153);
-  ellipse(s0, 2*(height/3), 40, 40);
-  
+  fill(204, 255, 153, 100);
+  ellipse(width/3, 2*(height/3), s0, s0);
+
   //blue
-  fill(204, 229, 255);
-  ellipse(s1, height/3, 40, 40);
-  
+  fill(204, 229, 255, 100);
+  ellipse(width/3, height/3, s1, s1);
+
   //white
-  fill(255);
-  ellipse(s2, height/3, 40, 40);
-  
+  fill(255, 100);
+  ellipse(2*(width/3), height/3, s2, s2);
+
   //yellow
-  fill(255, 255, 153);
-  ellipse(s3, 2*(height/3), 40, 40);
+  fill(255, 255, 153, 100);
+  ellipse(2*(width/3), 2*(height/3), s3, s3);
 }
-int renameMe = 0;
+//int renameMe = 0;
 void serialEvent (Serial myPort) {
-  renameMe++;
-  
-  if(renameMe % 60 == 0){
+  //renameMe++;
+
+  //if(renameMe % 60 == 0){
   //read serial buffer:
   String inputString = myPort.readStringUntil('\n');
   if (inputString != null) {
-    println(inputString);
-    
+    //println(inputString);
+
     inputString = trim(inputString);
     int values[] = int(split(inputString, ','));
-    
-    if(values.length == 4) {
-      s0 = map(values[0], 100, 255, 0, width/2);
-      s1 = map(values[1], 100, 255, 0, width/2);
-      s2 = map(values[2], 100, 255, width/2, width);
-      s3 = map(values[3], 100, 255, width/2, width);
+
+    if (values.length == 4) {
+      // s0 = values[0];
+      // s1 = values[1];
+      // s2 = values[2];
+      // s3 = values[3];
+      println(values[0]);
+      
+      s0 = map(values[0], 0, 200, 0, width);
+      s1 = map(values[1], 0, 200, 0, width);
+      s2 = map(values[2], 0, 200, 0, width);
+      s3 = map(values[3], 0, 200, 0, width);
     }
   }
-  }
+  //}
 }
 
 // for(int x = 0; x < 10; x=x+2){
