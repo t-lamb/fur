@@ -24,128 +24,101 @@ int diff2 = 0;
 int diff3 = 0;
 
 boolean firstRead = true;
-int count = 0;
-int numRead = 10;
-int threshold = 20;
+boolean pressed = false;
+count++;
+countMax = 10;
+threshold = 20;
 
-const int vibPin = 3;
-const int ledPin0 = 5;
-const int ledPin1 = 6;
+//const int vibPin = 3;
+//const int ledPin0 = 5;
+//const int ledPin1 = 6;
 
 void setup() {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
   Serial.println("0,0,0,0");
-  // set vibration motor 
+  
   //pinMode(vibPin, OUTPUT);
-  pinMode(ledPin0, OUTPUT);
-  pinMode(ledPin1, OUTPUT);
+  //pinMode(ledPin0, OUTPUT);
+  //pinMode(ledPin1, OUTPUT);
+
 }
 
 void loop() {
-  // vibration is off
-  //digitalWrite(vibPin, LOW);
-  //delay(2000);
+  readValues();
+  checkValues();
+  reset();
   
-  digitalWrite(ledPin0, LOW);
-  digitalWrite(ledPin1, LOW);
-  
-  // read pins
+//  digitalWrite(ledPin0, LOW);
+//  digitalWrite(ledPin1, LOW);
+}
+
+readValues() {
   int analogValue0 = analogRead(A0);
   int analogValue1 = analogRead(A1);
   int analogValue2 = analogRead(A2);
   int analogValue3 = analogRead(A3);
   
-  
-//  analogWrite(vibPin, analogValue2/4);
-//  analogWrite(ledPin, analogValue3/4);
-
-  //start counter
   count++;
-//
-//  // if this is the first reading
- if(firstRead) {
-   // gather first set of readings
-    base0total += analogValue0; 
+
+  if(firstRead) { // first run
+    base0total += analogValue0;
     base1total += analogValue1;
     base2total += analogValue2;
-    base3total += analogValue3; 
-//    // find first average
-    if (count == numRead){
-      count = 0;
+    base3total += analogValue3;
+
+    if(count == countMax){
       base0 = base0total/count;
       base1 = base1total/count;
       base2 = base2total/count;
       base3 = base3total/count;
-      firstRead = false;     
-    }
+
+      count = 0;
+      firstRead = false;
+    } 
   } 
-  else { // if sunbsequent reading
-    // gather new set of readings
-    new0total += analogValue0; 
+  else { // all subsequent runs
+    new0total += analogValue0;
     new1total += analogValue1;
     new2total += analogValue2;
     new3total += analogValue3;
-    // find new average
-//    Serial.println(count);
-    if (count == numRead){
+
+    if(count == countMax){
       new0 = new0total/count;
       new1 = new1total/count;
       new2 = new2total/count;
       new3 = new3total/count;
-
-      // find and print differences
-//      Serial.print(new0);
-//      Serial.print(" - ");
-//      Serial.print(base0);
-//      Serial.print(" = ");
-      diff0 = new0 - base0;
-//      Serial.print(diff0);
-//      Serial.print(",");
-      diff1 = new1 - base1;
-//      Serial.print(diff1);
-//      Serial.print(",");
-      diff2 = new2 - base2;
-//      Serial.print(diff2);
-//      Serial.print(",");
-//      Serial.print(new3);
-//      Serial.print(" - ");
-//      Serial.print(base3);
-//      Serial.print(" = ");
-//      Serial.print(analogValue3);
-      diff3 = new3 - base3;
-//      Serial.print(diff3);
-//      Serial.print("\n");
-      if(diff0 > threshold){
-        digitalWrite(ledPin0, HIGH);
-      }
-      if(diff1 > threshold){
-        digitalWrite(ledPin0, HIGH);
-      }
-      if(diff2 > threshold){
-        digitalWrite(ledPin1, HIGH);
-      }
-      if(diff3 > threshold){
-        digitalWrite(ledPin1, HIGH);
-      }
-      delay(50);
-
-      //
-//      digitalWrite(vibPin, HIGH);
-//delay(100);
-
-      // set new readings as base
-      base0 = new0;
-      base1 = new1;
-      base2 = new2;
-      base3 = new3;
-      new0total = 0;
-      new1total = 0;
-      new2total = 0;
-      new3total = 0;
-
-      // reset counter
-      count = 0;
     }
   }
+}
+
+checkValues() {
+//  diff0 = new0 - base0;
+//  diff1 = new1 - base1;
+//  diff2 = new2 - base2;
+//  diff3 = new3 - base3;
+//
+//  if (diff0 > threshold || diff1 > threshold){
+//    pressed = true;
+//  }
+//
+//  if (diff2 > threshold || diff3 > threshold){
+//    pressed = true;
+//  }
+  if (base0 != prev0){
+    pressed = true;
+  }
+}
+
+reset() {
+  base0 = new0;
+  base1 = new1;
+  base2 = new2;
+  base3 = new3;
+  new0total = 0;
+  new1total = 1;
+  new2total = 2;
+  new3total = 3;
+  
+  count = 0;
 }
