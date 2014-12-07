@@ -24,7 +24,8 @@ int diff2 = 0;
 int diff3 = 0;
 
 boolean firstRead = true;
-boolean pressed = false;
+boolean leftPressed = false;
+boolean rightPressed = false;
 count++;
 countMax = 10;
 threshold = 20;
@@ -37,7 +38,7 @@ void setup() {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
   Serial.println("0,0,0,0");
-  
+
   //pinMode(vibPin, OUTPUT);
   //pinMode(ledPin0, OUTPUT);
   //pinMode(ledPin1, OUTPUT);
@@ -48,9 +49,9 @@ void loop() {
   readValues();
   checkValues();
   reset();
-  
-//  digitalWrite(ledPin0, LOW);
-//  digitalWrite(ledPin1, LOW);
+
+  //  digitalWrite(ledPin0, LOW);
+  //  digitalWrite(ledPin1, LOW);
 }
 
 readValues() {
@@ -58,7 +59,7 @@ readValues() {
   int analogValue1 = analogRead(A1);
   int analogValue2 = analogRead(A2);
   int analogValue3 = analogRead(A3);
-  
+
   count++;
 
   if(firstRead) { // first run
@@ -93,22 +94,57 @@ readValues() {
 }
 
 checkValues() {
-//  diff0 = new0 - base0;
-//  diff1 = new1 - base1;
-//  diff2 = new2 - base2;
-//  diff3 = new3 - base3;
-//
-//  if (diff0 > threshold || diff1 > threshold){
-//    pressed = true;
-//  }
-//
-//  if (diff2 > threshold || diff3 > threshold){
-//    pressed = true;
-//  }
-  if (base0 != prev0){
-    pressed = true;
+  diff0 = new0 - base0;
+  diff1 = new1 - base1;
+  diff2 = new2 - base2;
+  diff3 = new3 - base3;
+
+  if (leftPressed) {
+    if (rightPressed){
+      // both are pressed
+    } 
+    else { // if only left is pressed, check for movement  
+      if (diff0 > threshold || diff1 > threshold){
+        // left is still pressed
+      } 
+      else if (diff2 > threshold || diff3 > threshold) {
+        //direction is correct
+        leftPressed = false;
+        rightPressed = true;
+      }
+      else {
+        // neither is pressed
+        leftPressed = false;
+        rightPressed = false; 
+      }
+    } 
+  } 
+  else if (rightPressed){
+    if (diff2 > threshold || diff3 > threshold){
+      // right is still pressed 
+    } 
+    else if (diff0 > threshold || diff1 > threshold) {
+      //direction is wrong
+      leftPressed = true;
+      rightPressed = false;
+    } 
+    else {
+      // neither is pressed
+      leftPressed = false;
+      rightPressed = false;
+    }
+  }
+  else { 
+    if (diff0 > threshold || diff1 > threshold){
+      leftPressed = true;
+    }
+
+    if (diff2 > threshold || diff3 > threshold){
+      rightPressed = true;
+    }
   }
 }
+
 
 reset() {
   base0 = new0;
@@ -119,6 +155,15 @@ reset() {
   new1total = 1;
   new2total = 2;
   new3total = 3;
-  
+
   count = 0;
 }
+
+
+
+
+
+
+
+
+
