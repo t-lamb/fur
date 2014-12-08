@@ -22,16 +22,16 @@ int countMax = 10;
 unsigned long start, finished, elapsed; 
 
 const int vibPin = 3;
-const int ledPin0 = 5;
-const int ledPin1 = 6;
+const int ledPinRed = 5;
+const int ledPinGreen = 6;
 
 void setup(){
   Serial.begin(9600);
   Serial.println("0,0");
 
   pinMode(vibPin, OUTPUT);
-  pinMode(ledPin0, OUTPUT);
-  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPinRed, OUTPUT);
+  pinMode(ledPinGreen, OUTPUT);
 
 }
 
@@ -44,8 +44,8 @@ void loop() {
 
   if(firstRead) {
     digitalWrite(vibPin, LOW);
-    analogWrite(ledPin0, 0);
-    analogWrite(ledPin1, 0);
+    analogWrite(ledPinRed, 0);
+    analogWrite(ledPinGreen, 0);
 
     //total first set of readings
     base0total += analogValue0;
@@ -72,56 +72,50 @@ void loop() {
 
       diff0 = new0 - base0;
       diff1 = new1 - base1;
-
+      
+      // if left was prev pressed, check if still pressed
       if (leftPressed){
-        if(diff0 < 0){
-          //start timer end
+        if(diff0 < 12){
+          leftPressed = true;
+        }
+        else if(diff1 > 12){
+          //timer end
           finished = millis();
           elapsed = finished - start;
-          Serial.println(elapsed);
+          digitalWrite(vibPin,LOW);
+          leftPressed = false;    
         }
-      }
-
-      if (rightPressed){
-        int brightness1 = new1/4;
-        if (diff1 > 18) {
-          analogWrite(ledPin0, brightness1);
-          delay(50);
-        }
-      }
-
+      }   
+      
+      // if left is pressed this time
       if (diff0 > 12){
         leftPressed = true;
         // light turns on when first pressed
-        int brightness1 = new0/4;
-        analogWrite(ledPin1, brightness1);
-        
+        int brightnessGreen = analogValue0/4;
+        analogWrite(ledPinGreen, brightnessGreen);
+        // start vib
         digitalWrite(vibPin, HIGH);
-        //set timer start
         start = millis();
-        delay(50);
-        Serial.print("start:");
-        Serial.println(diff1);
-        delay(elapsed*1.5);
+        delay(elapsed*2);
       } 
       else { 
+        // left is unpressed, turn off light, turn off vib
         leftPressed = false;
-        analogWrite(ledPin1, 0);
+        analogWrite(ledPinGreen, 0);
         digitalWrite(vibPin, LOW);
       }
-
-      if (diff1 > 18){
-        int brightness0 = new1/4;
-        analogWrite(ledPin0, brightness0);
-        rightPressed = true;
+      
+      // if pressed hard turb on light
+      if (diff1 > 40){
+         Serial.println(diff1);
+        int brightnessRed = analogValue1/4;
+        analogWrite(ledPinRed, brightnessRed);
+        delay(1);
       }
-      else if (diff1 > 7){
-        rightPressed = true;
-        
-      } 
       else {
-        rightPressed = false;
-        analogWrite(ledPin0, 0);
+        //otherwise turn it off
+        analogWrite(ledPinRed, 0);
+        delay(1);
       }
 
       delay(50);
@@ -136,6 +130,7 @@ void loop() {
     }
   }
 }
+
 
 
 
