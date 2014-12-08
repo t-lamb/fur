@@ -73,17 +73,15 @@ void loop() {
 
       //Serial.println(diff0);
       if (leftPressed){
-        digitalWrite(vibPin, HIGH);
-
-        if(rightPressed){
-          Serial.println("both pressed");
-        } 
-        else if (diff0 > 12){
+        if (diff0 > 12){
           //left is still pressed
         } 
         else if (diff1 > 7){
           //direction is correct
           Serial.println("moving right");
+          digitalWrite(vibPin, HIGH);
+          leftPressed = false;
+          rightPressed = true;
         } 
         else {
           //neither is pressed
@@ -94,11 +92,15 @@ void loop() {
 
       if (diff0 > 12){
         leftPressed = true;
+      } else { 
+        leftPressed = false;
       }
+      
       if (diff1 > 7){
         rightPressed = true;
+      } else {
+        rightPressed = false;
       }
-
 
       delay(50);
 
