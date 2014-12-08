@@ -74,7 +74,7 @@ void loop() {
       //Serial.println(diff0);
       if (leftPressed){
         digitalWrite(vibPin, HIGH);
-        
+
         if(rightPressed){
           Serial.println("both pressed");
         } 
@@ -90,22 +90,14 @@ void loop() {
           leftPressed = false;
           rightPressed = false;       
         } 
-
-        if (diff0 > 12){
-          leftPressed = true;
-        }
-        if (diff1 > 7){
-          rightPressed = true;
-        }
-
       }
 
-      //      if (diff0 <= 12){
-      //        leftPressed = false;
-      //      }
-      //      if (diff1 <= 7){
-      //        rightPressed = false;
-      //      } 
+      if (diff0 > 12){
+        leftPressed = true;
+      }
+      if (diff1 > 7){
+        rightPressed = true;
+      }
 
 
       delay(50);
@@ -119,24 +111,8 @@ void loop() {
       count = 0;
     }
   }
-  if (leftPressed) {
-    digitalWrite(vibPin, HIGH);
-  }
-  if (rightPressed) {
-    digitalWrite(ledPin0, HIGH);
-  }
-  if (leftPressed == false){
-    digitalWrite(vibPin, LOW);
-  }
-  if (rightPressed == false) {
-    digitalWrite(ledPin0, LOW);
-  }
-  //  if(leftPressed == false && rightPressed == false){
-  //    digitalWrite(vibPin, LOW);
-  //    digitalWrite(ledPin0, LOW);
-  //    digitalWrite(ledPin1, LOW);
-  //  }
 }
+
 
 
 
