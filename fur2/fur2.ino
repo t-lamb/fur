@@ -43,9 +43,9 @@ void loop() {
   count++;
 
   if(firstRead) {
-    analogWrite(vibPin, 0);
-    digitalWrite(ledPin0, LOW);
-    digitalWrite(ledPin1, LOW);
+    digitalWrite(vibPin, LOW);
+    analogWrite(ledPin0, 0);
+    analogWrite(ledPin1, 0);
 
     //total first set of readings
     base0total += analogValue0;
@@ -74,8 +74,6 @@ void loop() {
       diff1 = new1 - base1;
 
       if (leftPressed){
-        digitalWrite(ledPin1, HIGH);
-        
         if(diff0 < 0){
           //start timer end
           finished = millis();
@@ -85,8 +83,9 @@ void loop() {
       }
 
       if (rightPressed){
-        if (diff0 > 12 && diff1 < 0) {
-          digitalWrite(ledPin0, HIGH);
+        int brightness1 = new1/4;
+        if (diff1 > 18) {
+          analogWrite(ledPin0, brightness1);
           delay(50);
         }
       }
@@ -94,26 +93,35 @@ void loop() {
       if (diff0 > 12){
         leftPressed = true;
         // light turns on when first pressed
+        int brightness1 = new0/4;
+        analogWrite(ledPin1, brightness1);
+        
         digitalWrite(vibPin, HIGH);
         //set timer start
         start = millis();
         delay(50);
         Serial.print("start:");
         Serial.println(diff1);
-        delay(elapsed);
+        delay(elapsed*1.5);
       } 
       else { 
         leftPressed = false;
-        digitalWrite(ledPin1, LOW);
+        analogWrite(ledPin1, 0);
         digitalWrite(vibPin, LOW);
       }
 
-      if (diff1 > 7){
+      if (diff1 > 18){
+        int brightness0 = new1/4;
+        analogWrite(ledPin0, brightness0);
         rightPressed = true;
+      }
+      else if (diff1 > 7){
+        rightPressed = true;
+        
       } 
       else {
         rightPressed = false;
-        digitalWrite(ledPin0, LOW);
+        analogWrite(ledPin0, 0);
       }
 
       delay(50);
