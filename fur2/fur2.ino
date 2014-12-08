@@ -41,8 +41,8 @@ void loop() {
   count++;
 
   if(firstRead) {
-    digitalWrite(vibPin, LOW);
-    digitalWrite(ledPin0, LOW);
+    analogWrite(vibPin, 0);
+    analogWrite(ledPin0, 0);
     digitalWrite(ledPin1, LOW);
 
     //total first set of readings
@@ -71,25 +71,42 @@ void loop() {
       diff0 = new0 - base0;
       diff1 = new1 - base1;
 
+
+      //      if (diff0 > 12){
+      //        int vibVal = map(new0, 0, 1023, 0, 255);
+      //        constrain(vibVal, 0, 50);
+      //        analogWrite(ledPin0, vibVal);
+      //        Serial.println(vibVal);
+      //      } else {
+      //        analogWrite(ledPin0, 0);
+      //      }
       //Serial.println(diff0);
+      
       if (leftPressed){
+        int vibVal = map(new0, 0, 1023, 0, 255);
+        constrain(vibVal, 0, 50);
+        analogWrite(ledPin0, vibVal);
+        Serial.println(vibVal);
+        // check left pin        
         if (diff0 > 12){
           //left is still pressed
+          analogWrite(ledPin0, vibVal);
         } 
         else if (diff1 > 7){
           //direction is correct
           Serial.println("moving right");
-          digitalWrite(vibPin, HIGH);
+          analogWrite(ledPin0, vibVal);
           leftPressed = false;
           rightPressed = true;
         } 
         else {
           //neither is pressed
           leftPressed = false;
-          rightPressed = false;       
+          rightPressed = false;
+          analogWrite(ledPin0, 0);       
         } 
       }
-
+      
       if (diff0 > 12){
         leftPressed = true;
       } else { 
@@ -114,6 +131,8 @@ void loop() {
     }
   }
 }
+
+
 
 
 
