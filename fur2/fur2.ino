@@ -54,7 +54,7 @@ void loop() {
 
   if(firstRead){
     digitalWrite(vibPin, LOW);
-    analogWrite(ledPinRed, 0);
+    digitalWrite(ledPinRed, LOW);
     analogWrite(ledPinGreen, 0);
 
     // total first set of readings
@@ -95,6 +95,8 @@ void loop() {
       //      Serial.println(diff2);
 
       // if left is pressed, check for movement
+      digitalWrite(ledPinRed, LOW);
+      
       if (pressed0) {
         pressed1 = false;
         if (diff0 < 0 && diff1 > threshold1) { 
@@ -110,6 +112,12 @@ void loop() {
         if (diff0 > threshold0) {
           digitalWrite(vibPin, HIGH);
           pressed0 = true;
+        }
+      }
+      if (pressed2) {
+        if (diff2 < 0 && diff1 > threshold1) {
+          digitalWrite(ledPinRed, HIGH);
+          pressed2 = false;
         }
       }
 
