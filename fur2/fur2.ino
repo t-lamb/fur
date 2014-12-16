@@ -88,76 +88,59 @@ void loop() {
       diff1 = new1 - base1;
       diff2 = new2 - base2;
 
-//      Serial.println(diff0);
-//      Serial.print(",");
-//      Serial.print(diff1);
-//      Serial.print(",");
-//      Serial.println(diff2);
+      //      Serial.println(diff0);
+      //      Serial.print(",");
+      //      Serial.print(diff1);
+      //      Serial.print(",");
+      //      Serial.println(diff2);
 
       // if left is pressed, check for movement
       if (pressed0) {
-        // if left still pressed
-        if (diff0 > threshold0) {
-          Serial.println("left");
-          pressed0 = true;
-        }
-        // if moving right
-        else if (diff1 > threshold1) { 
-         // timer end
-         finished = millis();
-         elapsed = finished - start;
-         pressed0 = false;
-         pressed1 = true;  
-         Serial.println("left middle");     
+        pressed1 = false;
+        if (diff0 < 0 && diff1 > threshold1) { 
+//          // timer end
+//          finished = millis();
+//          elapsed = finished - start; 
+          pressed1 = true; 
+        } else if (diff0 < 0){
+          digitalWrite(vibPin, LOW);
         }
       }
       if (pressed1) {
         if (diff0 > threshold0) {
-         digitalWrite(vibPin, HIGH);
-         delay(elapsed);
-         digitalWrite(vibPin, LOW);
-         Serial.println("middle");
-         pressed0 = true;
+          digitalWrite(vibPin, HIGH);
+          pressed0 = true;
         }
       }
-      if (pressed2) {
-        digitalWrite(vibPin, LOW);
-        int brightnessRed = analogValue2/4;
-        analogWrite(ledPinRed, brightnessRed);
-        Serial.println("right");
-      }
-      
+
       // check all thresholds every round  
       if (diff0 > threshold0){
-          pressed0 = true;
-          // light turns on when first pressed
-          int brightnessGreen = analogValue0/4;
-          analogWrite(ledPinGreen, brightnessGreen);
-          start = millis();         
-//        Serial.println("left");
+        pressed0 = true;
+//        start = millis();         
+        // Serial.println("left");
       }
       if (diff1 > threshold1){
-          pressed1 = true;
-//        Serial.println("middle");
+        // Serial.println("middle");
       }
       if (diff2 > threshold2){
-          pressed2 = true;
-//        Serial.println("right");
+        pressed2 = true;
+        // Serial.println("right");
       }
 
-      delay(50);
+      delay(1);
       base0 = new0;
       base1 = new1;
       base2 = new2;  
-      
+
       new0total = 0;
       new1total = 0;
       new2total = 0;
-      
+
       count = 0;  
     }
   }
 }
+
 
 
 
