@@ -88,51 +88,34 @@ void loop() {
       diff1 = new1 - base1;
       diff2 = new2 - base2;
 
-      //      Serial.print(diff0);
-      //      Serial.print(",");
-      //      Serial.print(diff1);
-      //      Serial.print(",");
-      //      Serial.println(diff2);
-
       // if left is pressed, check for movement
-      digitalWrite(ledPinRed, LOW);
+
 
       // if left is pressed, check for movement      
       if (pressed0) {
         // if moves from left to middle
-        if (diff0 <= 0 && diff1 > 4) { 
+        if (diff0 <= -2 && diff1 > 4) { 
           digitalWrite(vibPin, HIGH);
           digitalWrite(ledPinGreen, HIGH);
           Serial.println("pet>>"); 
         }
       }
-      if (pressed1) {
-        if (diff0 > threshold0) {
-          //digitalWrite(vibPin, HIGH);
-          pressed0 = true;
-        }
-      }
       if (pressed2) {
-        if (diff2 < 0 && diff1 > threshold1) {
-
+        digitalWrite(ledPinGreen, LOW);
+        digitalWrite(vibPin, LOW);
+        if (diff2 <= -2 && diff1 > 4) {
+          digitalWrite(ledPinRed, HIGH);
+        } else {
           pressed2 = false;
+          digitalWrite(ledPinRed, LOW);
         }
       }
-
       // check all thresholds every round  
       if (diff0 > threshold0){
-        pressed0 = true;
-        //        start = millis();         
-        //        Serial.println("left");
+        pressed0 = true;        
       }
-      if (diff1 > threshold1){
-        //        Serial.println("middle");
-      }
-      if (diff2 > threshold2){
-        digitalWrite(vibPin, LOW);
-        digitalWrite(ledPinGreen, LOW);
+      if (diff2 > 7) {
         pressed2 = true;
-        //        Serial.println("right");
       }
 
       delay(1);
