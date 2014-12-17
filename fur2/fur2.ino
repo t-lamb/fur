@@ -22,9 +22,9 @@ boolean firstRead = true;
 boolean pressed0 = false;
 boolean pressed1 = false;
 boolean pressed2 = false;
-int threshold0 = 20;
-int threshold1 = 20;
-int threshold2 = 15;
+int threshold0 = 10;
+int threshold1 = 7;
+int threshold2 = 7;
 
 int count = 0;
 int countMax = 10;
@@ -88,7 +88,7 @@ void loop() {
       diff1 = new1 - base1;
       diff2 = new2 - base2;
 
-      //      Serial.println(diff0);
+      //      Serial.print(diff0);
       //      Serial.print(",");
       //      Serial.print(diff1);
       //      Serial.print(",");
@@ -96,27 +96,25 @@ void loop() {
 
       // if left is pressed, check for movement
       digitalWrite(ledPinRed, LOW);
-      
+
+      // if left is pressed, check for movement      
       if (pressed0) {
-        pressed1 = false;
-        if (diff0 < 0 && diff1 > threshold1) { 
-//          // timer end
-//          finished = millis();
-//          elapsed = finished - start; 
-          pressed1 = true; 
-        } else if (diff0 < 0){
-          digitalWrite(vibPin, LOW);
+        // if moves from left to middle
+        if (diff0 <= 0 && diff1 > 4) { 
+          digitalWrite(vibPin, HIGH);
+          digitalWrite(ledPinGreen, HIGH);
+          Serial.println("pet>>"); 
         }
       }
       if (pressed1) {
         if (diff0 > threshold0) {
-          digitalWrite(vibPin, HIGH);
+          //digitalWrite(vibPin, HIGH);
           pressed0 = true;
         }
       }
       if (pressed2) {
         if (diff2 < 0 && diff1 > threshold1) {
-          digitalWrite(ledPinRed, HIGH);
+
           pressed2 = false;
         }
       }
@@ -124,15 +122,17 @@ void loop() {
       // check all thresholds every round  
       if (diff0 > threshold0){
         pressed0 = true;
-//        start = millis();         
-        // Serial.println("left");
+        //        start = millis();         
+        //        Serial.println("left");
       }
       if (diff1 > threshold1){
-        // Serial.println("middle");
+        //        Serial.println("middle");
       }
       if (diff2 > threshold2){
+        digitalWrite(vibPin, LOW);
+        digitalWrite(ledPinGreen, LOW);
         pressed2 = true;
-        // Serial.println("right");
+        //        Serial.println("right");
       }
 
       delay(1);
@@ -148,7 +148,3 @@ void loop() {
     }
   }
 }
-
-
-
-
